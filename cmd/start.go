@@ -1,21 +1,37 @@
 package cmd
 
 import (
+	"github.com/matthieuberger/go-blockchain/blockchain"
+
 	"github.com/matthieuberger/go-blockchain/server"
 	"github.com/spf13/cobra"
-	"os"
 )
+
+var peers []string
+var port int
+var addr string
+var protocol string
 
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Start a nwe blockchain",
+	Short: "Start a new blockchain",
 	Run: func(cmd *cobra.Command, args []string) {
-		port := os.Getenv("GO_BLOCKCHAIN_TCP_ADDR")
-		server := server.NewBlockChainServer(port)
-		server.Start()
+
+		// Create a new blockchain
+		bc := blockchain.NewBlockchain()
+		plugin := &server.BlockChainServerPlugin{RemoteAddress: addr, Blockchain: bc}
+		p2pHost := server.P2PHost{port, protocol, plugin, peers}
+		p2pHost.Start()
+
 	},
 }
 
 func init() {
+
+	startCmd.Flags().StringSliceVar(&peers, "peers", []string{}, "Peers addresses")
+	startCmd.Flags().IntVarP(&port, "port", "p", 8555, "Listening port")
+	startCmd.Flags().StringVarP(&addr, "address", "a", "0.0.0.0", "Address")
+	startCmd.Flags().StringVar(&protocol, "protocol", "tcp", "Protocol (Ex: tcp)")
+
 	rootCmd.AddCommand(startCmd)
 }

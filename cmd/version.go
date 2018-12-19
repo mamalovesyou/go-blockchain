@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
 const (
+	// VERSION represent the software version
 	VERSION = "0.0.1"
 )
 

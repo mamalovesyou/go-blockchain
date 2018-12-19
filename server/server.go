@@ -1,9 +1,10 @@
 package server
 
 import (
-	bc "github.com/matthieuberger/go-blockchain/blockchain"
 	"log"
 	"net"
+
+	bc "github.com/matthieuberger/go-blockchain/blockchain"
 )
 
 type BlockChainServer struct {
