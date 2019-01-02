@@ -1,12 +1,16 @@
 syntax = "proto3";
 
-package messages;
+package blockchain;
 
 message Block {
     int64 timestamp = 1;
     bytes prevBlockHash = 2;
     bytes data = 3;
     bytes hash = 4;
+}
+
+message AddBlockRequest {
+    string data = 1;
 }
 
 message Blockchain {

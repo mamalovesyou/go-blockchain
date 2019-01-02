@@ -4,8 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/matthieuberger/go-blockchain/blockchain"
+	"github.com/davecgh/go-spew/spew"
 
+	"github.com/matthieuberger/go-blockchain/blockchain"
 	"github.com/perlin-network/noise/network"
 )
 
@@ -27,9 +28,12 @@ func (state *BlockChainServerPlugin) Receive(ctx *network.PluginContext) error {
 	case *blockchain.Blockchain:
 		// If the new blockchain is longer than the one we have then replace it
 		if len(msg.Blocks) > len(state.Blockchain.Blocks) {
-			log.Printf("[UPDATE BLOCKCHAIN] From: %s\n%v\n", ctx.Client().ID.Address, msg)
+			log.Printf("[REPLACED BLOCKCHAIN] From: %s\n%v\n", ctx.Client().ID.Address, msg)
 			state.Blockchain = msg
 		}
+	case *blockchain.AddBlockRequest:
+		state.Blockchain.AddBlock(msg.Data)
+		log.Printf("[ADD BLOCK] %v\n", spew.Sdump(state.Blockchain.GetLastBlock()))
 	}
 	return nil
 }

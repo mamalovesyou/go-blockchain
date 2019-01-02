@@ -12,6 +12,8 @@ var port int
 var addr string
 var protocol string
 
+var host *server.P2PHost = nil
+
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start a new blockchain",
@@ -20,8 +22,8 @@ var startCmd = &cobra.Command{
 		// Create a new blockchain
 		bc := blockchain.NewBlockchain()
 		plugin := &server.BlockChainServerPlugin{RemoteAddress: addr, Blockchain: bc}
-		p2pHost := server.P2PHost{port, protocol, plugin, peers}
-		p2pHost.Start()
+		host := server.P2PHost{port, protocol, plugin, peers}
+		host.Start()
 
 	},
 }

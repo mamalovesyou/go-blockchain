@@ -26,6 +26,7 @@ func (state *P2PHost) Start() {
 	keys := ed25519.RandomKeyPair()
 
 	opcode.RegisterMessageType(opcode.Opcode(1000), &blockchain.Blockchain{Blocks: []*blockchain.Block{}})
+	opcode.RegisterMessageType(opcode.Opcode(2000), &blockchain.Block{})
 
 	builder := network.NewBuilder()
 	builder.SetKeys(keys)
